@@ -1,0 +1,27 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "moebiusWeights_one",
+    "moebius_quadForm_eq",
+    "multiPrimeQuadForm_lower_bound'",
+    "optimalWeight_quadForm_eq_moebius",
+    "multiPrimeQuadForm_lower_bound_inv",
+    "Majorant.target_correlation_le_majorant_correlation_plus_surplus",
+    "Majorant.parity_separation_implies_surplus",
+    "Majorant.budget_from_parity_separation",
+    "Majorant.energy_budget_from_parity_separation",
+    "parityWitness_bounded",
+    "parityWitness_coprime_eq_one",
+    "parityWitness_target_correlation",
+    "parity_budget_moebius",
+    "parity_separating_weights_cost_more_than_moebius",
+    "parityWitness_sum_six",
+    "parityWitness_target_six",
+    "optimalWeights_minimize_quadForm",
+    "parity_budget_general",
+    "parity_separating_weights_exceed_optimal"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice", "Lean.ofReduceBool", "Lean.trustCompiler", "sorryAx"],
+  "enable_nanoda": false
+}
