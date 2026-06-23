@@ -1,0 +1,166 @@
+***
+
+### `formalization.yml`
+
+```yaml
+# formalization.yaml (v0.5)
+version: "v0.5"
+
+project:
+  name: "SelbergMajorantParityObstruction"
+  authors:
+    - "Arij Aziz"
+    id: "https://github.com/Arij-Aziz/Selberg-Parity-Obstruction"
+  license: "Apache-2.0"
+
+status:
+  scope: >
+    Formalizes the Parity Obstruction (Parity Budget) for sieve majorants
+    on finite rings Fin(P·m). It establishes an abstract framework proving 
+    that any majorant suppressing a bounded witness must incur excess mass
+    and inflated L² energy. Applies this framework to the finite parity witness
+    χ(x) = μ(gcd(x, P)). Unconditionally proves that parity-separating weights
+    cost more than the Möbius baseline (Result A). Conditionally proves the 
+    obstruction for arbitrary density functions (Result B). Includes concrete
+    validations for P=6.
+  sorry_count: 1
+  sorry_in_definitions: 0
+  sorry_locations:
+    - declaration: optimalWeights_minimize_quadForm
+      file: RequestProject/Core/ParityBudget/GeneralCase.lean
+      reason: >
+        Relies on the variational calculus derivation showing that optimal 
+        Selberg weights globally minimize the positive semi-definite quadratic 
+        form (Iwaniec-Kowalski eq. 6.70). This is the exact same mathematical
+        gap deferred in the foundational multi-prime project.
+  axioms:
+    - propext
+    - Classical.choice
+    - Quot.sound
+
+comparator:
+  checked: true
+  config_file: comparator-config.json
+  theorem_count: 19
+  verdict: pass
+  permitted_axioms:
+    - propext
+    - Quot.sound
+    - Classical.choice
+    - Lean.ofReduceBool
+    - Lean.trustCompiler
+    - sorryAx
+
+main_results:
+
+    # ── §2. Abstract Parity Budget ────────────────────────────────────────
+
+    - declaration: target_correlation_le_majorant_correlation_plus_surplus
+      file: RequestProject/Core/ParityBudget/AbstractBudget.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "Fundamental inequality linking correlations to excess mass."
+
+    - declaration: budget_from_parity_separation
+      file: RequestProject/Core/ParityBudget/AbstractBudget.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "mass ≥ targetMass + (α - β)"
+
+    - declaration: energy_budget_from_parity_separation
+      file: RequestProject/Core/ParityBudget/AbstractBudget.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "Sharp L² bound induced by parity separation."
+
+    # ── §3. Witness Properties ────────────────────────────────────────────
+
+    - declaration: parityWitness_bounded
+      file: RequestProject/Core/ParityBudget/Setup.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "|χ(x)| ≤ 1."
+
+    - declaration: parityWitness_target_correlation
+      file: RequestProject/Core/ParityBudget/Setup.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "Target correlation is exactly φ(P)·m."
+
+    # ── §4. Möbius Case (Result A) ────────────────────────────────────────
+
+    - declaration: parity_budget_moebius
+      file: RequestProject/Core/ParityBudget/MoebiusCase.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "If Σ ν(x)χ(x) ≤ 0, then Q(λ) ≥ φ(P)/P."
+
+    - declaration: parity_separating_weights_cost_more_than_moebius
+      file: RequestProject/Core/ParityBudget/MoebiusCase.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "Parity-separating weights are strictly worse than the Möbius baseline."
+
+    # ── §5. Concrete Examples ─────────────────────────────────────────────
+
+    - declaration: parityWitness_sum_six
+      file: RequestProject/Core/ParityBudget/Examples.lean
+      challenge_file: Challenge.lean
+      sorry_count: 0
+      axioms: [propext, Classical.choice, Quot.sound]
+      comparator_checked: true
+      note: "Validates sum of witness over P=6 is 0."
+
+    # ── §6. General Case (Result B) ───────────────────────────────────────
+
+    - declaration: parity_budget_general
+      file: RequestProject/Core/ParityBudget/GeneralCase.lean
+      challenge_file: Challenge.lean
+      sorry_count: 1
+      axioms: [propext, Classical.choice, Quot.sound, sorryAx]
+      comparator_checked: true
+      note: "Conditional generalization to arbitrary multiplicative density g."
+
+    - declaration: parity_separating_weights_exceed_optimal
+      file: RequestProject/Core/ParityBudget/GeneralCase.lean
+      challenge_file: Challenge.lean
+      sorry_count: 1
+      axioms: [propext, Classical.choice, Quot.sound, sorryAx]
+      comparator_checked: true
+      note: "Conditional on optimalWeights_minimize_quadForm."
+
+automation:
+  methods:
+    - method: agent
+      framework: "Human-AI collaboration"
+      tool_setup: "Lean 4 + Mathlib v4.28.0."
+      prompting_notes: >
+        Mathematical direction and abstract framework definitions supplied by human.
+        AI primarily utilized to execute the linartih and cauchy-schwarz 
+        manipulations within AbstractBudget.lean.
+
+fidelity:
+  divergences: >
+    Result B is conditional on the overarching Selberg variational calculus 
+    optimization problem, which remains stubbed as a sorry.
+
+review:
+  status: "agent-reviewed, self-assessed, comparator-verified"
+  notes: >
+    All abstract inequality proofs in ParityBudget.AbstractBudget successfully 
+    verified without sorries. The fundamental restriction mechanism governing 
+    the parity budget is thus completely foundational and machine-verified.
