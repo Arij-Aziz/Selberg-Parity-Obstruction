@@ -1,7 +1,7 @@
 ![Build](https://github.com/Arij-Aziz/Selberg-Parity-Obstruction/actions/workflows/build.yml/badge.svg)
 # Selberg Majorant: Parity Budget Extension — A Lean 4 Formalization
 
-Machine-verified proofs formalizing the **Parity Obstruction** for the multi-prime Selberg majorant. This project extends the multi-prime framework to prove that any sieve majorant attempting to separate numbers by their prime-factor parity must incur a strict, quantifiable penalty in its mass and L² energy. 
+Machine-verified proofs formalizing the **Parity Obstruction** for the [multi-prime Selberg majorant](https://github.com/Arij-Aziz/Selberg_improvement_general). This project extends the multi-prime framework to prove that any sieve majorant attempting to separate numbers by their prime-factor parity must incur a strict, quantifiable penalty in its mass and L² energy. 
 
 Formalized in Lean 4 using Mathlib. The abstract structural inequalities and the Möbius-weight case are fully sorry-free; axiom footprint verified as `[propext, Classical.choice, Quot.sound]` for all theorems outside the one deferred optimal-weight step (see `RequestProject/Audit.lean` and **Sorry Status** below).
 Challenge.lean (root) is a statement-only mirror for the comparator check; its sorry proofs are intentional placeholders and are not part of the verified proof chain.
@@ -162,13 +162,53 @@ Requires Lean toolchain `leanprover/lean4:v4.28.0` (see `lean-toolchain`).
 
 ## File Map
 
-```
+```text
 RequestProject/
 ├── Audit.lean                              ← #print axioms for all new theorems
 ├── AssumptionsRegistry.lean                ← Manually maintained proof-status log
 ├── Main.lean                               ← Top-level imports
 └── Core/
-    └── ParityBudget/
+    ├── Basic.lean
+    ├── Majorant.lean                       ← Abstract Majorant structure
+    ├── MajorantComparison.lean
+    ├── SelbergComparison.lean
+    ├── SelbergRestriction.lean
+    ├── RestrictionLowerBound.lean
+    ├── RestrictionLowerBoundSelberg.lean
+    ├── KineticPropagation.lean
+    ├── Fourier.lean
+    ├── FourierRatio.lean
+    ├── Transference.lean
+    ├── Weights/                            ← Single-prime / algebraic foundations
+    │   ├── Definition.lean
+    │   ├── UpperBound.lean
+    │   ├── Bounds.lean
+    │   ├── Optimization.lean
+    │   ├── FourierConnection.lean
+    │   └── QuadFormStability.lean
+    ├── MultiPrime/                         ← Multi-prime Selberg foundations
+    │   ├── Setup.lean
+    │   ├── JointCount.lean
+    │   ├── L2Identity.lean
+    │   ├── FourierRatio.lean
+    │   ├── FourierRatioSharp.lean
+    │   ├── OptimalWeights.lean
+    │   ├── MoebiusWeights.lean
+    │   ├── SelbergCorrelation.lean
+    │   ├── SelbergCorrelationBoundDisproved.lean
+    │   ├── SelbergWeightCorrelation.lean
+    │   ├── RemainderBound.lean
+    │   ├── SelbergUpperBound.lean
+    │   └── GeneralWeightConnection.lean
+    ├── MassEnergyTradeoff/                 ← Multi-prime mass-energy bounds
+    │   ├── SharpBounds.lean
+    │   └── MassEnergySandwich.lean
+    ├── CorrelationBound/                   
+    │   └── AdditiveEnergyLower.lean
+    ├── KineticStability/
+    │   ├── VFunctionStability.lean
+    │   └── QuadFormPerturbation.lean
+    └── ParityBudget/                       ← NEW: Parity Obstruction Framework
         ├── Setup.lean                      ← parityWitness definition and bounds
         ├── AbstractBudget.lean             ← Abstract framework: budget_from_parity_separation
         ├── MoebiusCase.lean                ← Result A: parity_budget_moebius (sorry-free)
@@ -179,6 +219,4 @@ RequestProject/
 formalization.yml                           ← Machine-readable project metadata
 Challenge.lean                              ← Pure-Mathlib auditable statement file (sorry proofs)
 Solution.lean                               ← File that only imports Main.lean file
-
-```
 
